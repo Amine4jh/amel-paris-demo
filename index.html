@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amel Paris Salon & Spa | Demo</title>
+  <meta name="description" content="Demo website for Amel Paris Salon & Spa - manicure, pedicure, gel extensions, gel polish and paraffin wax." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { heading: ['"Playfair Display"', 'serif'], body: ['Lato', 'sans-serif'] },
+          colors: {
+            blush: { 50: '#fff8fa', 100: '#fdeef2', 200: '#fad9e3', 300: '#f4b8c9', 400: '#ea92ac' },
+            wine: { 400: '#c9607c', 500: '#b04a64', 600: '#9a3d56', 700: '#7f3047', 800: '#5f2335', 900: '#3f1623' },
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-16px)' } },
+            marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
+            pulseRing: { '0%': { transform: 'scale(1)', opacity: '.6' }, '100%': { transform: 'scale(1.9)', opacity: '0' } },
+            blob: { '0%,100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }, '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' } },
+          },
+          animation: {
+            float: 'float 6s ease-in-out infinite',
+            marquee: 'marquee 28s linear infinite',
+            pulseRing: 'pulseRing 2s ease-out infinite',
+            blob: 'blob 12s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root { --pink: #f4b8c9; --wine: #9a3d56; }
+    body { font-family: 'Lato', sans-serif; background: #fff8fa; overflow-x: hidden; }
+
+    /* Colored scrollbar */
+    html { scrollbar-width: thin; scrollbar-color: #c9607c #fdeef2; }
+    ::-webkit-scrollbar { width: 12px; }
+    ::-webkit-scrollbar-track { background: #fdeef2; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #f4b8c9, #c9607c 55%, #7f3047);
+      border-radius: 999px; border: 3px solid #fdeef2;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ea92ac, #9a3d56); }
+    ::selection { background: #f4b8c9; color: #5f2335; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+    .reveal.left { transform: translateX(-48px); }
+    .reveal.right { transform: translateX(48px); }
+    .reveal.zoom { transform: scale(.92); }
+    .reveal.show { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    .glass { background: rgba(255,255,255,.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.7); }
+    .glass-dark { background: rgba(255,255,255,.12); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.28); }
+    .text-grad { background: linear-gradient(90deg, #7f3047, #c9607c, #7f3047); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 6s linear infinite; }
+    @keyframes shine { to { background-position: 200% center; } }
+
+    /* Spotlight card */
+    .spot { position: relative; overflow: hidden; }
+    .spot::before {
+      content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .35s;
+      background: radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(244,184,201,.55), transparent 60%);
+    }
+    .spot:hover::before { opacity: 1; }
+    .spot > * { position: relative; }
+
+    /* Button shine */
+    .btn-shine { position: relative; overflow: hidden; }
+    .btn-shine::after {
+      content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.5), transparent);
+      transform: skewX(-20deg); transition: left .7s;
+    }
+    .btn-shine:hover::after { left: 140%; }
+
+    /* Input */
+    .field { width: 100%; background: rgba(255,255,255,.8); border: 1.5px solid #fad9e3; border-radius: 1rem; padding: .95rem 1.1rem; outline: none; transition: all .25s; color: #5f2335; }
+    .field:focus { border-color: #c9607c; box-shadow: 0 0 0 4px rgba(244,184,201,.45); background: #fff; }
+    .field::placeholder { color: #b98a98; }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: #c9607c; transition: width .3s; border-radius: 2px; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    .ring-deco { background-image: repeating-radial-gradient(circle at center, transparent 0 14px, rgba(244,184,201,.5) 14px 16px); }
+    .hero-img { transform: scale(1.12); transition: transform 1.6s ease-out; }
+    .hero-img.loaded { transform: scale(1); }
+    .tab-active { background: #9a3d56; color: #fff; box-shadow: 0 8px 20px -6px rgba(154,61,86,.6); }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="text-wine-800 antialiased">
+
+  <!-- Scroll progress -->
+  <div id="progress" class="fixed top-0 left-0 h-1 z-[60] bg-gradient-to-r from-blush-300 via-wine-400 to-wine-700 w-0"></div>
+
+  <!-- Header -->
+  <header id="header" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+    <div id="headerBar" class="max-w-6xl mx-auto mt-4 mx-4 px-4 sm:px-6 h-[72px] flex items-center justify-between rounded-full glass shadow-lg shadow-wine-700/10 transition-all duration-500">
+      <a href="#home" class="flex items-center gap-3">
+        <img src="light-logo.png" alt="Amel Paris Salon & Spa" class="h-11 sm:h-12 w-auto object-contain"
+             onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+        <span class="hidden font-heading text-xl text-wine-700 leading-tight">Amel Paris<br><span class="text-[10px] tracking-[0.3em] uppercase text-wine-500">Salon &amp; Spa</span></span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-10 text-[13px] font-bold tracking-[0.18em] uppercase">
+        <a href="#home" class="nav-link active" data-link="home">Home</a>
+        <a href="#services" class="nav-link" data-link="services">Services</a>
+        <a href="#contact" class="nav-link" data-link="contact">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#book" class="btn-shine hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-wine-600 to-wine-400 hover:shadow-lg hover:shadow-wine-500/40 hover:-translate-y-0.5 text-white text-[13px] font-bold tracking-[0.18em] uppercase px-7 py-3.5 transition-all">
+          <i class="fa-regular fa-calendar-check"></i> Book Now
+        </a>
+        <button id="menuBtn" class="md:hidden w-11 h-11 rounded-full bg-white/70 text-wine-700" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars" id="menuIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden mx-4 mt-2 rounded-3xl glass shadow-xl overflow-hidden max-h-0 transition-all duration-500">
+      <div class="px-6 py-5 flex flex-col gap-4 text-sm font-bold tracking-[0.18em] uppercase">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+        <a href="#book" class="mobile-link btn-shine inline-flex justify-center items-center gap-2 rounded-full bg-gradient-to-r from-wine-600 to-wine-400 text-white px-6 py-3.5">
+          <i class="fa-regular fa-calendar-check"></i> Book Now
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-blush-200 to-wine-500">
+      <img id="heroImg" src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80"
+           alt="Serene spa setting" class="hero-img absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-br from-blush-200/90 via-blush-300/75 to-wine-600/80"></div>
+
+      <div class="absolute -top-24 -left-24 w-96 h-96 bg-white/30 blur-3xl animate-blob"></div>
+      <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-wine-400/40 blur-3xl animate-blob"></div>
+      <div class="absolute -right-32 top-20 w-[26rem] h-[26rem] rounded-full ring-deco opacity-70 hidden md:block"></div>
+
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-36 pb-28 grid lg:grid-cols-12 gap-12 items-center w-full">
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <p class="reveal inline-flex items-center gap-3 glass-dark rounded-full px-5 py-2 text-white text-[11px] font-bold tracking-[0.35em] uppercase mb-8">
+            <i class="fa-solid fa-heart text-blush-200"></i> Salon &amp; Spa
+          </p>
+          <h1 class="reveal d1 font-heading text-5xl sm:text-6xl xl:text-7xl font-bold text-white leading-[1.05] drop-shadow-lg">
+            Welcome to <span class="italic font-semibold text-blush-100">Amel Paris</span> Salon &amp; Spa
+          </h1>
+          <p class="reveal d2 mt-7 text-lg sm:text-xl text-white/95 max-w-xl font-light mx-auto lg:mx-0 leading-relaxed">
+            Experience Parisian elegance and top-tier beauty services.
+          </p>
+          <div class="reveal d3 mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a href="#book" class="btn-shine group inline-flex items-center justify-center gap-3 rounded-full bg-white text-wine-700 font-bold tracking-[0.18em] uppercase text-[13px] px-10 py-4 shadow-2xl hover:-translate-y-1 transition-all">
+              <i class="fa-regular fa-calendar-check"></i> Book Now
+              <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+            </a>
+            <a href="#services" class="inline-flex items-center justify-center gap-3 rounded-full glass-dark text-white font-bold tracking-[0.18em] uppercase text-[13px] px-10 py-4 hover:bg-white/25 transition">
+              Our Services
+            </a>
+          </div>
+        </div>
+
+        <!-- Floating glass card -->
+        <div class="lg:col-span-5 reveal zoom d3 hidden lg:block">
+          <div class="relative animate-float">
+            <div class="glass-dark rounded-[2rem] p-8 text-white shadow-2xl">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="relative w-14 h-14">
+                  <span class="absolute inset-0 rounded-full bg-white/50 animate-pulseRing"></span>
+                  <div class="relative w-14 h-14 rounded-full bg-white text-wine-600 flex items-center justify-center text-xl"><i class="fa-solid fa-spa"></i></div>
+                </div>
+                <div>
+                  <p class="font-heading text-xl">Pamper yourself</p>
+                  <p class="text-sm text-white/80">Walk-ins &amp; appointments</p>
+                </div>
+              </div>
+              <ul class="space-y-3 text-sm">
+                <li class="flex items-center gap-3"><i class="fa-solid fa-heart text-blush-200"></i> Manicure &amp; Pedicure</li>
+                <li class="flex items-center gap-3"><i class="fa-solid fa-heart text-blush-200"></i> Gel Extensions</li>
+                <li class="flex items-center gap-3"><i class="fa-solid fa-heart text-blush-200"></i> Gel Polish</li>
+                <li class="flex items-center gap-3"><i class="fa-solid fa-heart text-blush-200"></i> Paraffin Wax</li>
+              </ul>
+              <a href="tel:33529786" class="mt-7 flex items-center justify-between rounded-2xl bg-white/90 text-wine-700 px-5 py-4 font-bold hover:bg-white transition">
+                <span><i class="fa-solid fa-phone mr-2"></i> 33529786</span><i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#services" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/90 flex flex-col items-center gap-2 text-[10px] tracking-[0.4em] uppercase" aria-label="Scroll down">
+        Scroll
+        <span class="w-6 h-10 rounded-full border-2 border-white/70 flex justify-center pt-2"><span class="w-1 h-2 rounded-full bg-white animate-bounce"></span></span>
+      </a>
+    </section>
+
+    <!-- Marquee -->
+    <div class="bg-wine-700 text-blush-100 py-5 overflow-hidden border-y border-wine-600">
+      <div class="flex w-max animate-marquee font-heading italic text-2xl whitespace-nowrap">
+        <div class="flex items-center gap-10 pr-10">
+          <span>Manicure &amp; Pedicure</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Gel Extensions</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Gel Polish</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Paraffin Wax</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Parisian Elegance</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+        </div>
+        <div class="flex items-center gap-10 pr-10" aria-hidden="true">
+          <span>Manicure &amp; Pedicure</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Gel Extensions</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Gel Polish</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Paraffin Wax</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+          <span>Parisian Elegance</span><i class="fa-solid fa-heart text-blush-300 text-sm"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section id="services" class="relative py-28 bg-white overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-blush-200/60 blur-3xl"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-16">
+          <p class="reveal text-wine-500 tracking-[0.35em] uppercase text-xs font-bold mb-3">What we offer</p>
+          <h2 class="reveal d1 font-heading text-4xl sm:text-6xl font-bold text-grad">Our Services</h2>
+          <div class="reveal d2 mt-6 flex items-center justify-center gap-3 text-wine-500">
+            <span class="h-px w-16 bg-blush-300"></span><i class="fa-solid fa-heart text-sm"></i><span class="h-px w-16 bg-blush-300"></span>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6">
+          <article class="spot reveal left lg:col-span-7 rounded-[2rem] bg-gradient-to-br from-blush-100 to-blush-200 border border-blush-200 p-10 min-h-[280px] flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-wine-500/15 transition-all duration-500">
+            <div class="flex items-start justify-between">
+              <div class="w-16 h-16 rounded-2xl bg-white text-wine-600 flex items-center justify-center text-3xl shadow-md"><i class="fa-solid fa-hand-sparkles"></i></div>
+              <span class="font-heading text-6xl text-wine-500/20 font-bold">01</span>
+            </div>
+            <div>
+              <h3 class="font-heading text-3xl text-wine-700 mb-2">Manicure &amp; Pedicure</h3>
+              <p class="text-wine-800/75 max-w-md leading-relaxed">Classic care for soft, beautifully groomed hands and feet, finished with a flawless touch.</p>
+            </div>
+          </article>
+
+          <article class="spot reveal right d1 lg:col-span-5 rounded-[2rem] bg-wine-700 text-white p-10 min-h-[280px] flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-wine-700/40 transition-all duration-500">
+            <div class="flex items-start justify-between">
+              <div class="w-16 h-16 rounded-2xl bg-white/15 text-blush-200 flex items-center justify-center text-3xl"><i class="fa-solid fa-gem"></i></div>
+              <span class="font-heading text-6xl text-white/15 font-bold">02</span>
+            </div>
+            <div>
+              <h3 class="font-heading text-3xl mb-2">Gel Extensions</h3>
+              <p class="text-white/80 leading-relaxed">Long-lasting, elegant extensions shaped to your style.</p>
+            </div>
+          </article>
+
+          <article class="spot reveal left d2 lg:col-span-5 rounded-[2rem] bg-blush-50 border border-blush-200 p-10 min-h-[280px] flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-wine-500/15 transition-all duration-500">
+            <div class="flex items-start justify-between">
+              <div class="w-16 h-16 rounded-2xl bg-blush-200 text-wine-600 flex items-center justify-center text-3xl"><i class="fa-solid fa-paintbrush"></i></div>
+              <span class="font-heading text-6xl text-wine-500/20 font-bold">03</span>
+            </div>
+            <div>
+              <h3 class="font-heading text-3xl text-wine-700 mb-2">Gel Polish</h3>
+              <p class="text-wine-800/75 leading-relaxed">High-shine colour that stays flawless for weeks.</p>
+            </div>
+          </article>
+
+          <article class="spot reveal right d3 lg:col-span-7 rounded-[2rem] bg-gradient-to-br from-blush-300 to-blush-200 p-10 min-h-[280px] flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-wine-500/20 transition-all duration-500">
+            <div class="flex items-start justify-between">
+              <div class="w-16 h-16 rounded-2xl bg-white text-wine-600 flex items-center justify-center text-3xl shadow-md"><i class="fa-solid fa-spa"></i></div>
+              <span class="font-heading text-6xl text-wine-700/20 font-bold">04</span>
+            </div>
+            <div>
+              <h3 class="font-heading text-3xl text-wine-700 mb-2">Paraffin Wax</h3>
+              <p class="text-wine-800/80 max-w-md leading-relaxed">A warm, deeply moisturising treatment that leaves your skin silky smooth.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="reveal text-center mt-14">
+          <a href="#book" class="btn-shine inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-wine-600 to-wine-400 text-white font-bold tracking-[0.18em] uppercase text-[13px] px-10 py-4 shadow-xl shadow-wine-500/30 hover:-translate-y-1 transition-all">
+            Book Now <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why / gallery -->
+    <section class="py-28 bg-gradient-to-b from-blush-50 to-blush-100">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal left grid grid-cols-2 gap-4">
+          <div class="space-y-4 pt-10">
+            <div class="overflow-hidden rounded-[2rem] bg-blush-200 h-56 sm:h-64 group">
+              <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=80" alt="Manicure" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+            <div class="overflow-hidden rounded-[2rem] bg-blush-300 h-40 sm:h-48 group">
+              <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=700&q=80" alt="Nail care" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="overflow-hidden rounded-[2rem] bg-blush-300 h-40 sm:h-48 group">
+              <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80" alt="Elegant salon" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+            <div class="overflow-hidden rounded-[2rem] bg-blush-200 h-56 sm:h-64 group">
+              <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=700&q=80" alt="Spa" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal right">
+          <p class="text-wine-500 tracking-[0.35em] uppercase text-xs font-bold mb-3">The Amel Paris touch</p>
+          <h2 class="font-heading text-4xl sm:text-5xl font-bold text-wine-700 leading-tight mb-6">Beauty, the Parisian way</h2>
+          <p class="text-wine-800/80 leading-relaxed mb-8">A calm, refined space where every detail is taken care of, so you can relax and leave feeling your best.</p>
+          <div class="space-y-5">
+            <div class="flex gap-4 items-start glass rounded-2xl p-5 hover:translate-x-2 transition">
+              <div class="w-12 h-12 shrink-0 rounded-xl bg-wine-600 text-white flex items-center justify-center"><i class="fa-solid fa-star"></i></div>
+              <div><h3 class="font-heading text-lg text-wine-700">Top-tier results</h3><p class="text-sm text-wine-800/75">Careful technique and attention to detail on every service.</p></div>
+            </div>
+            <div class="flex gap-4 items-start glass rounded-2xl p-5 hover:translate-x-2 transition">
+              <div class="w-12 h-12 shrink-0 rounded-xl bg-wine-600 text-white flex items-center justify-center"><i class="fa-solid fa-pump-soap"></i></div>
+              <div><h3 class="font-heading text-lg text-wine-700">Clean &amp; hygienic</h3><p class="text-sm text-wine-800/75">A fresh, sanitised setup for your comfort and peace of mind.</p></div>
+            </div>
+            <div class="flex gap-4 items-start glass rounded-2xl p-5 hover:translate-x-2 transition">
+              <div class="w-12 h-12 shrink-0 rounded-xl bg-wine-600 text-white flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
+              <div><h3 class="font-heading text-lg text-wine-700">Two convenient locations</h3><p class="text-sm text-wine-800/75">Find us at Dareen Tower, West Bay and Al Jazi Gardens 2.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking form + map -->
+    <section id="book" class="relative py-28 bg-white overflow-hidden">
+      <div class="absolute -left-32 top-10 w-96 h-96 rounded-full ring-deco opacity-60"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+          <p class="reveal text-wine-500 tracking-[0.35em] uppercase text-xs font-bold mb-3">Reserve your visit</p>
+          <h2 class="reveal d1 font-heading text-4xl sm:text-6xl font-bold text-grad">Send Us a Message</h2>
+          <p class="reveal d2 mt-4 text-wine-800/75 max-w-xl mx-auto">Tell us what you would like and we will get back to you to confirm your appointment.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+          <!-- Form -->
+          <form id="contactForm" class="reveal left rounded-[2rem] bg-gradient-to-br from-blush-100 to-blush-50 border border-blush-200 p-8 sm:p-10 shadow-xl shadow-wine-500/10 space-y-5" novalidate>
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Full name</label>
+                <div class="relative"><i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-wine-400"></i>
+                <input id="name" name="name" type="text" required placeholder="Your name" class="field !pl-11" /></div>
+              </div>
+              <div>
+                <label for="phone" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Phone</label>
+                <div class="relative"><i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-wine-400"></i>
+                <input id="phone" name="phone" type="tel" required placeholder="Your phone number" class="field !pl-11" /></div>
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="service" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Service</label>
+                <select id="service" name="service" required class="field">
+                  <option value="">Choose a service</option>
+                  <option>Manicure &amp; Pedicure</option>
+                  <option>Gel Extensions</option>
+                  <option>Gel Polish</option>
+                  <option>Paraffin Wax</option>
+                </select>
+              </div>
+              <div>
+                <label for="branch" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Location</label>
+                <select id="branch" name="branch" class="field">
+                  <option>G.F, Dareen Tower, Westbay</option>
+                  <option>Al Jazi Gardens 2</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="date" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Preferred date</label>
+              <input id="date" name="date" type="date" class="field" />
+            </div>
+            <div>
+              <label for="message" class="block text-xs font-bold tracking-widest uppercase text-wine-600 mb-2">Message</label>
+              <textarea id="message" name="message" rows="4" placeholder="Anything we should know?" class="field resize-none"></textarea>
+            </div>
+            <button type="submit" class="btn-shine w-full inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-wine-600 to-wine-400 text-white font-bold tracking-[0.18em] uppercase text-[13px] px-10 py-4 shadow-xl shadow-wine-500/30 hover:-translate-y-1 transition-all">
+              <i class="fa-regular fa-paper-plane"></i> Send Request
+            </button>
+            <p id="formMsg" class="text-sm text-center min-h-[1.25rem]"></p>
+            <p class="text-[11px] text-center text-wine-800/50">Demo form: no data is sent anywhere.</p>
+          </form>
+
+          <!-- Map -->
+          <div class="reveal right flex flex-col gap-4">
+            <div class="flex gap-3 p-1.5 rounded-full bg-blush-100 border border-blush-200 w-fit self-center lg:self-start">
+              <button data-map="Dareen+Tower+West+Bay+Doha" class="map-tab tab-active rounded-full px-5 py-2.5 text-xs font-bold tracking-widest uppercase transition-all"><i class="fa-solid fa-location-dot mr-1"></i> West Bay</button>
+              <button data-map="Al+Jazi+Gardens+2+Doha" class="map-tab rounded-full px-5 py-2.5 text-xs font-bold tracking-widest uppercase text-wine-700 transition-all"><i class="fa-solid fa-location-dot mr-1"></i> Al Jazi Gardens 2</button>
+            </div>
+            <div class="relative flex-1 min-h-[380px] rounded-[2rem] overflow-hidden shadow-xl shadow-wine-500/15 border-4 border-white bg-blush-100">
+              <iframe id="mapFrame" title="Amel Paris location map" class="absolute inset-0 w-full h-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                src="https://maps.google.com/maps?q=Dareen+Tower+West+Bay+Doha&z=15&output=embed"></iframe>
+              <div class="absolute left-4 bottom-4 glass rounded-2xl px-4 py-3 text-sm font-bold text-wine-700 shadow-lg" id="mapLabel">
+                <i class="fa-solid fa-location-dot text-wine-500 mr-1"></i> G.F, Dareen Tower, Westbay
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="relative py-28 bg-gradient-to-b from-blush-100 to-blush-200 overflow-hidden">
+      <div class="absolute -right-24 bottom-0 w-96 h-96 rounded-full ring-deco opacity-60"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-16">
+          <p class="reveal text-wine-500 tracking-[0.35em] uppercase text-xs font-bold mb-3">Get in touch</p>
+          <h2 class="reveal d1 font-heading text-4xl sm:text-6xl font-bold text-wine-700">Contact Us</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="spot reveal d1 rounded-[2rem] bg-white p-9 shadow-lg text-center hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-wine-600 to-wine-400 text-white flex items-center justify-center text-2xl mb-5 shadow-lg shadow-wine-500/30"><i class="fa-solid fa-phone"></i></div>
+            <h3 class="font-heading text-2xl text-wine-700 mb-3">Call Us</h3>
+            <a href="tel:33529786" class="block text-xl font-bold tracking-wide hover:text-wine-500 transition">33529786</a>
+            <a href="tel:40024227" class="block text-xl font-bold tracking-wide hover:text-wine-500 transition">40024227</a>
+          </div>
+
+          <div class="spot reveal d2 rounded-[2rem] bg-white p-9 shadow-lg text-center hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-wine-600 to-wine-400 text-white flex items-center justify-center text-2xl mb-5 shadow-lg shadow-wine-500/30"><i class="fa-solid fa-location-dot"></i></div>
+            <h3 class="font-heading text-2xl text-wine-700 mb-3">Visit Us</h3>
+            <p class="font-bold"><i class="fa-solid fa-location-dot text-wine-500 mr-1"></i> G.F, Dareen Tower, Westbay</p>
+            <p class="my-2 text-wine-400"><i class="fa-solid fa-heart text-xs"></i></p>
+            <p class="font-bold"><i class="fa-solid fa-location-dot text-wine-500 mr-1"></i> Al Jazi Gardens 2</p>
+          </div>
+
+          <div class="spot reveal d3 rounded-[2rem] bg-white p-9 shadow-lg text-center hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-wine-600 to-wine-400 text-white flex items-center justify-center text-2xl mb-5 shadow-lg shadow-wine-500/30"><i class="fa-brands fa-instagram"></i></div>
+            <h3 class="font-heading text-2xl text-wine-700 mb-3">Follow Us</h3>
+            <a href="https://www.instagram.com/amel.parisdoha" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-lg font-bold hover:text-wine-500 transition">
+              <i class="fa-brands fa-instagram"></i> @AMEL.PARISDOHA
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative bg-wine-900 text-blush-100 overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-wine-600/30 blur-3xl"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-wine-500/20 blur-3xl"></div>
+
+    <!-- CTA band -->
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20">
+      <div class="reveal rounded-[2rem] bg-gradient-to-r from-wine-600 to-wine-400 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div class="text-center md:text-left">
+          <h3 class="font-heading text-3xl sm:text-4xl text-white mb-2">Ready for your glow-up?</h3>
+          <p class="text-white/85">Book your appointment today and let us bring Parisian beauty to you.</p>
+        </div>
+        <a href="#book" class="btn-shine shrink-0 inline-flex items-center gap-3 rounded-full bg-white text-wine-700 font-bold tracking-[0.18em] uppercase text-[13px] px-9 py-4 hover:-translate-y-1 transition-all">
+          Book Now <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 grid sm:grid-cols-2 lg:grid-cols-12 gap-12">
+      <!-- Brand -->
+      <div class="lg:col-span-4">
+        <img src="dark-logo.png" alt="Amel Paris Salon & Spa" class="h-20 mb-5 object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+        <p class="hidden font-heading text-2xl text-white mb-5">Amel Paris <span class="block text-[11px] tracking-[0.35em] uppercase text-blush-300">Salon &amp; Spa</span></p>
+        <p class="font-heading italic text-xl text-white mb-3">Bringing Parisian beauty to you.</p>
+        <p class="text-sm text-blush-200/75 leading-relaxed mb-6">A refined salon and spa experience, with elegant nail care and relaxing treatments in a warm, welcoming space.</p>
+        <div class="flex gap-3">
+          <a href="https://www.instagram.com/amel.parisdoha" target="_blank" rel="noopener" aria-label="Instagram" class="w-11 h-11 rounded-full border border-blush-300/30 flex items-center justify-center hover:bg-blush-200 hover:text-wine-700 hover:-translate-y-1 transition"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://wa.me/97433529786" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-11 h-11 rounded-full border border-blush-300/30 flex items-center justify-center hover:bg-blush-200 hover:text-wine-700 hover:-translate-y-1 transition"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="tel:33529786" aria-label="Call" class="w-11 h-11 rounded-full border border-blush-300/30 flex items-center justify-center hover:bg-blush-200 hover:text-wine-700 hover:-translate-y-1 transition"><i class="fa-solid fa-phone"></i></a>
+          <a href="#contact" aria-label="Email" class="w-11 h-11 rounded-full border border-blush-300/30 flex items-center justify-center hover:bg-blush-200 hover:text-wine-700 hover:-translate-y-1 transition"><i class="fa-regular fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="lg:col-span-2">
+        <h4 class="font-heading text-lg text-white mb-5">Quick Links</h4>
+        <ul class="space-y-3 text-sm text-blush-200/80">
+          <li><a href="#home" class="hover:text-white hover:pl-1 transition-all">Home</a></li>
+          <li><a href="#services" class="hover:text-white hover:pl-1 transition-all">Services</a></li>
+          <li><a href="#book" class="hover:text-white hover:pl-1 transition-all">Book an Appointment</a></li>
+          <li><a href="#contact" class="hover:text-white hover:pl-1 transition-all">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="lg:col-span-2">
+        <h4 class="font-heading text-lg text-white mb-5">Services</h4>
+        <ul class="space-y-3 text-sm text-blush-200/80">
+          <li><i class="fa-solid fa-heart text-[10px] text-blush-300 mr-2"></i>Manicure &amp; Pedicure</li>
+          <li><i class="fa-solid fa-heart text-[10px] text-blush-300 mr-2"></i>Gel Extensions</li>
+          <li><i class="fa-solid fa-heart text-[10px] text-blush-300 mr-2"></i>Gel Polish</li>
+          <li><i class="fa-solid fa-heart text-[10px] text-blush-300 mr-2"></i>Paraffin Wax</li>
+        </ul>
+      </div>
+
+      <!-- Hours + contact -->
+      <div class="lg:col-span-4">
+        <h4 class="font-heading text-lg text-white mb-5">Opening Hours <span class="text-[10px] font-body tracking-widest uppercase text-blush-300/70">(sample)</span></h4>
+        <ul class="space-y-2 text-sm text-blush-200/80 mb-6">
+          <li class="flex justify-between border-b border-white/10 pb-2"><span>Sat - Thu</span><span>10:00 AM - 10:00 PM</span></li>
+          <li class="flex justify-between border-b border-white/10 pb-2"><span>Friday</span><span>2:00 PM - 10:00 PM</span></li>
+        </ul>
+        <ul class="space-y-3 text-sm text-blush-200/80">
+          <li class="flex gap-3"><i class="fa-solid fa-phone mt-1 text-blush-300"></i><span>33529786 / 40024227</span></li>
+          <li class="flex gap-3"><i class="fa-solid fa-location-dot mt-1 text-blush-300"></i><span>G.F, Dareen Tower, Westbay</span></li>
+          <li class="flex gap-3"><i class="fa-solid fa-location-dot mt-1 text-blush-300"></i><span>Al Jazi Gardens 2</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pb-14">
+      <div class="rounded-[2rem] glass-dark p-8 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="text-center lg:text-left">
+          <h4 class="font-heading text-2xl text-white mb-1">Stay in the loop</h4>
+          <p class="text-sm text-blush-200/80">Get news about offers and new treatments.</p>
+        </div>
+        <form id="newsForm" class="flex w-full lg:w-auto flex-col sm:flex-row gap-3" novalidate>
+          <input type="email" required placeholder="Your email address" aria-label="Email address" class="field !bg-white/10 !border-white/25 !text-white placeholder:!text-blush-200/60 sm:w-72" />
+          <button type="submit" class="btn-shine rounded-full bg-white text-wine-700 font-bold tracking-[0.18em] uppercase text-[12px] px-8 py-4 hover:-translate-y-1 transition-all">Subscribe</button>
+        </form>
+      </div>
+      <p id="newsMsg" class="text-sm text-center mt-3 min-h-[1.25rem] text-blush-200"></p>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="relative border-t border-white/10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-blush-200/70">
+        <p>&copy; <span id="year">2026</span> Amel Paris Salon &amp; Spa. All rights reserved.</p>
+        <p class="flex items-center gap-2">Made with <i class="fa-solid fa-heart text-blush-300"></i> in Doha &middot; Demo website</p>
+        <div class="flex gap-5">
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating buttons -->
+  <a href="https://wa.me/97433529786" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
+     class="fixed left-5 bottom-5 z-40 w-14 h-14 rounded-full bg-gradient-to-br from-wine-600 to-wine-400 text-white text-2xl flex items-center justify-center shadow-xl shadow-wine-500/40 hover:scale-110 transition">
+    <span class="absolute inset-0 rounded-full bg-wine-400/60 animate-pulseRing"></span>
+    <i class="fa-brands fa-whatsapp relative"></i>
+  </a>
+  <button id="toTop" aria-label="Back to top"
+     class="fixed right-5 bottom-5 z-40 w-12 h-12 rounded-full glass text-wine-700 shadow-xl opacity-0 pointer-events-none translate-y-4 hover:-translate-y-1 transition-all duration-300">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hero image zoom-in
+    const heroImg = document.getElementById('heroImg');
+    requestAnimationFrame(() => heroImg.classList.add('loaded'));
+
+    // Image fallback: hide broken images so the gradient behind shows
+    document.querySelectorAll('img').forEach(img => {
+      if (img.hasAttribute('onerror')) return;
+      img.addEventListener('error', () => { img.style.opacity = '0'; });
+    });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Spotlight effect
+    document.querySelectorAll('.spot').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+
+    // Header, progress, back-to-top, active link
+    const header = document.getElementById('headerBar');
+    const progress = document.getElementById('progress');
+    const toTop = document.getElementById('toTop');
+    const sections = ['home', 'services', 'contact'].map(id => document.getElementById(id));
+    function onScroll() {
+      const y = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+      header.classList.toggle('!h-[60px]', y > 60);
+      header.classList.toggle('shadow-2xl', y > 60);
+      const show = y > 600;
+      toTop.classList.toggle('opacity-0', !show);
+      toTop.classList.toggle('pointer-events-none', !show);
+      toTop.classList.toggle('translate-y-4', !show);
+      let current = 'home';
+      sections.forEach(s => { if (s && s.getBoundingClientRect().top < window.innerHeight * 0.4) current = s.id; });
+      document.querySelectorAll('[data-link]').forEach(a => a.classList.toggle('active', a.dataset.link === current));
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Mobile menu
+    const menu = document.getElementById('mobileMenu');
+    const icon = document.getElementById('menuIcon');
+    let open = false;
+    function setMenu(v) {
+      open = v;
+      menu.style.maxHeight = v ? menu.scrollHeight + 'px' : '0px';
+      icon.className = v ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
+    document.getElementById('menuBtn').addEventListener('click', () => setMenu(!open));
+    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => setMenu(false)));
+
+    // Map tabs
+    const frame = document.getElementById('mapFrame');
+    const label = document.getElementById('mapLabel');
+    const labels = { 'Dareen+Tower+West+Bay+Doha': 'G.F, Dareen Tower, Westbay', 'Al+Jazi+Gardens+2+Doha': 'Al Jazi Gardens 2' };
+    document.querySelectorAll('.map-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.map-tab').forEach(t => { t.classList.remove('tab-active'); t.classList.add('text-wine-700'); });
+        tab.classList.add('tab-active'); tab.classList.remove('text-wine-700');
+        const q = tab.dataset.map;
+        frame.src = 'https://maps.google.com/maps?q=' + q + '&z=15&output=embed';
+        label.innerHTML = '<i class="fa-solid fa-location-dot text-wine-500 mr-1"></i> ' + labels[q];
+      });
+    });
+
+    // Date min
+    const dateInput = document.getElementById('date');
+    if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+
+    // Demo contact form
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const f = e.target, msg = document.getElementById('formMsg');
+      if (!f.name.value.trim() || !f.phone.value.trim() || !f.service.value) {
+        msg.className = 'text-sm text-center min-h-[1.25rem] text-red-600 font-bold';
+        msg.textContent = 'Please fill in your name, phone and service.';
+        return;
+      }
+      msg.className = 'text-sm text-center min-h-[1.25rem] text-wine-600 font-bold';
+      msg.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Thank you, ' + f.name.value.trim() + '! We will contact you soon (demo).';
+      f.reset();
+    });
+
+    // Demo newsletter
+    document.getElementById('newsForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = e.target.querySelector('input'), msg = document.getElementById('newsMsg');
+      if (!/^\S+@\S+\.\S+$/.test(input.value)) { msg.textContent = 'Please enter a valid email address.'; return; }
+      msg.textContent = 'Thank you for subscribing (demo).';
+      input.value = '';
+    });
+  </script>
+</body>
+</html>
